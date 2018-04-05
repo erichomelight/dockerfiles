@@ -20,5 +20,9 @@ RUN apt-get update && apt-get install -y \
 ENV LANG en-US
 
 COPY local.conf /etc/fonts/local.conf
+COPY firestarter.sh /opt/firestarter.sh
+RUN chmod +x /opt/firestarter.sh
+RUN mkdir /opt/profile
 
-ENTRYPOINT [ "/usr/bin/firefox" ]
+#ENTRYPOINT [ "/usr/bin/firefox" ]
+ENTRYPOINT [ "/opt/firestarter.sh" ]
