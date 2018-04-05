@@ -1,0 +1,12 @@
+{
+  "load_extensions": {
+    "nbextensions_configurator/config_menu/main": true,
+    "contrib_nbextensions_help_item/main": true,
+    "execute_time/ExecuteTime": true,
+    "hide_input/main": true,
+    "freeze/main": true,
+    "hide_input_all/main": true,
+    "notify/notify": true,
+    "codefolding/main": true
+  }
+}
