@@ -11,10 +11,11 @@ RUN     apt-get -yqq update && \
 
 FROM base as build
 
-#ENV       %%ENV%%
+ENV HEROKU_ROUTER="/var/scratch/heroku_router.log"
+ENV HEROKU_REFERS="/var/scratch/heroku_refers.log"
 
-RUN pip install awscli pyparsing
+RUN pip install awscli
 
-COPY copy_log.sh /tmp/workdir
+COPY *_log.* /tmp/workdir/
 
-ENTRYPOINT get_file.sh && unzip_and_proc.sh && python ./generate.py && ./copy_log.sh
+ENTRYPOINT ./prep_log.sh && python ./generate_log.py $HEROKU_ROUTER $HEROKU_REFERS $OUTPUT_LOG_FILE  && ./copy_log.sh
