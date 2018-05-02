@@ -22,12 +22,12 @@ def main():
         for line in refile:
             req_id = re.findall("\[(.*?)\]", line)
 
-            if len(req_id) > 3 and uuid4hex.match(req_id[1]):
+            if len(req_id) > 2 and uuid4hex.match(req_id[1]):
                 if req_id[1] in uuid_dict:
                     pass
                 else:
-                    if len(req_id) > 4:
-                        uuid_dict[req_id[1]] = ' user-agent="{}" referer="{}"'.format(req_id[2], req_id[4])
+                    if len(req_id) > 3:
+                        uuid_dict[req_id[1]] = ' user-agent="{}" referer="{}"'.format(req_id[2], req_id[3])
                     else:
                         uuid_dict[req_id[1]] = ' user-agent="{}"'.format(req_id[2])
 
