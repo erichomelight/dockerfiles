@@ -7,18 +7,18 @@
 echo "Copying ${INPUT_LOG_FILE} from S3 at ${INPUT_S3_PATH}/$INPUT_LOG_FILE ..."
 aws s3 cp s3://${INPUT_S3_PATH}/${INPUT_LOG_FILE} --region ${AWS_REGION} ./${INPUT_LOG_FILE}
 
-echo "Unzip ${INPUT_LOG_FILE}"
-pigz -d ./${INPUT_LOG_FILE}
+#echo "Unzip ${INPUT_LOG_FILE}"
+
 
 #echo "Get only the referer part"
 #awk '{if(/app web/) {print > "'${REFERS_HEROKU}'"}}' ./${INPUT_LOG_FILE%.*}
 
 echo "reduce filesize to make process more manageable"
-sed  -e 's/[^]]*\[/\[/'  -e 's/\][^]]*\[/\] \[/g'  -e 's/\][^[]*$/\]/' ./${INPUT_LOG_FILE%.*} | awk '!seen[$0]++' > ${HEROKU_REFERS}
+gunzip -c ./${INPUT_LOG_FILE} | sed  -e 's/[^]]*\[/\[/'  -e 's/\][^]]*\[/\] \[/g'  -e 's/\][^[]*$/\]/' | awk '!seen[$0]++' > ${HEROKU_REFERS}
 
 echo 'Get only the router part'
-awk '{if(/router/) {print > "'${HEROKU_ROUTER}'"}}' ./${INPUT_LOG_FILE%.*}
-rm  ./${INPUT_LOG_FILE%.*}
+gunzip -c ./${INPUT_LOG_FILE} | awk '{if(/router/) {print > "'${HEROKU_ROUTER}'"}}'
+rm  ./${INPUT_LOG_FILE}
 # if [ -e ./${HEROKU_ROUTER} -a -e ./${HEROKU_REFERS} ]
 # then
 #     echo "files are ok"
